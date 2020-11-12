@@ -62,7 +62,7 @@ def main ():
     
     # Set the variables for the tests to run
     ips_rule_to_apply = "Restrict Download Of EICAR Test File Over HTTP"
-    if("redhat" in operating_system or "ubuntu" in operating_system):
+    if("ubuntu" in operating_system or "redhat" in operating_system or "amazon-linux" in operating_system):
         im_rule_to_apply = "Unix - Open Port Monitor"
         li_rule_to_apply = "Unix - Syslog"
     if("windows" in operating_system):
@@ -131,7 +131,7 @@ def main ():
         webreputationtest(policy_id, configuration, api_version, overrides, operating_system)
         loginspectiontest(li_rule_to_apply,policy_id, configuration, api_version, overrides, operating_system)
         applicationcontroltest(host_id, policy_id, configuration, api_version, overrides, operating_system)
-        if("ubuntu" in operating_system or "redhat" in operating_system):
+        if("ubuntu" in operating_system or "redhat" in operating_system or "amazon-linux" in operating_system):
             dockeramtest(host_id, policy_id, configuration, api_version, overrides, operating_system)
         exit()
         

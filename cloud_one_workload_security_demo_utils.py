@@ -10,18 +10,18 @@ from subprocess import Popen, PIPE, STDOUT
 # It returns the operating system
 def getoperatingsystem():
     # Check the OS information
-    platform_info = platform.platform()
-    system_info = platform.system()
-    release_info = platform.release()
+    platform_info = platform.platform() # 'Linux-4.14.193-149.317.amzn2.x86_64-x86_64-with-glibc2.2.5'
+    system_info = platform.system() # 'Linux'
+    release_info = platform.release() # '4.14.193-149.317.amzn2.x86_64'
 
     #Added this as a secondary test since platform is not always correct
     if("linux" in platform_info.lower()):
-        cmd = "uname -a"
+        cmd = "uname -a" # Linux ip-172-31-3-215.us-east-2.compute.internal 4.14.193-149.317.amzn2.x86_64 #1 SMP Thu Sep 3 19:04:44 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
         output = runcommand(cmd)
 
     # If the platform is something other than what's been tested, exit
-    if("ubuntu" not in platform_info.lower() and "redhat" not in platform_info.lower() and "windows" not in platform_info.lower() and "ubuntu" not in output.lower() and "redhat" not in output.lower()):
-        print("Currently these tests only work on Ubuntu, Redhat and Windows.  Exiting!!")
+    if("ubuntu" not in platform_info.lower() and "redhat" not in platform_info.lower() and "windows" not in platform_info.lower() and "amzn" not in platform_info.lower() and "ubuntu" not in output.lower() and "redhat" not in output.lower()):
+        print("Currently these tests only work on Ubuntu, Redhat, Amazon Linux and Windows.  Exiting!!")
         exit()
     
     # Otherwise let's lowercase everything and return the operating system
@@ -29,6 +29,8 @@ def getoperatingsystem():
         operating_system = "ubuntu"
     elif("redhat" in platform_info.lower()):
         operating_system = "redhat"
+    elif("amzn" in platform_info.lower()):
+        operating_system = "amazon-linux"
     elif("windows" in platform_info.lower()):
         operating_system = "windows"
     else:
@@ -287,7 +289,7 @@ def runcommand(cmd):
 # This function will call dsa_control to send a heartbeat
 # It is used to get the events back to Cloud One or Deep Security Manager
 def sendheartbeat(operating_system):
-    if("ubuntu" in operating_system or "redhat" in operating_system):
+    if("ubuntu" in operating_system or "redhat" in operating_system or "amazon-linux" in operating_system):
         cmd = "sudo /opt/ds_agent/dsa_control -m"
         output = runcommand(cmd)
     if("windows" in operating_system):
