@@ -51,8 +51,8 @@ def getpolicyid(configuration, api_version, overrides):
 
     policyName = ""
 
-    if os.path.exists('config.json'):
-        f = open('config.json', 'r')
+    if os.path.exists('/home/ec2-user/cloudOneWorkloadSecurityDemo/config.json'):
+        f = open('/home/ec2-user/cloudOneWorkloadSecurityDemo/config.json', 'r')
         config = json.loads(f.read())
         policyName = config["policyName"]
         f.close()
@@ -240,8 +240,8 @@ def gethostid(policy_id, configuration, api_version, overrides):
         hostName = ""
         confirmation = True # Default to True for non-interactive use-cases
 
-        if os.path.exists('config.json'):
-            f = open('config.json', 'r')
+        if os.path.exists('/home/ec2-user/cloudOneWorkloadSecurityDemo/config.json'):
+            f = open('/home/ec2-user/cloudOneWorkloadSecurityDemo/config.json', 'r')
             config = json.loads(f.read())
             hostName = config["hostName"]
             confirmation = config["confirmation"]
