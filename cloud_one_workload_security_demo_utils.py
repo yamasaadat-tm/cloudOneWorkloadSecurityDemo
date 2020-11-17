@@ -10,18 +10,6 @@ import json
 
 # This file contains various functions that are re-used by the scripts
 
-policyName = ""
-hostName = ""
-confirmation = True # Default to True for non-interactive use-cases
-
-if os.path.exists('config.json'):
-    f = open('config.json', 'r')
-    config = json.loads(f.read())
-    policyName = config["policyName"]
-    hostName = config["hostName"]
-    confirmation = config["confirmation"]
-    f.close()
-
 # This function will get the operating system where the tests are being run
 # It returns the operating system
 def getoperatingsystem():
@@ -61,7 +49,13 @@ def getoperatingsystem():
 # It returns the policy ID
 def getpolicyid(configuration, api_version, overrides):
 
-    global policyName
+    policyName = ""
+
+    if os.path.exists('config.json'):
+        f = open('config.json', 'r')
+        config = json.loads(f.read())
+        policyName = config["policyName"]
+        f.close()
 
     # List the policies available and print them out so the user can choose
     available_policies = listpolicies(configuration, api_version, overrides)
@@ -241,10 +235,18 @@ def listpolicies(configuration, api_version, overrides):
 # It then returns the host ID
 def gethostid(policy_id, configuration, api_version, overrides):
 
-    global confirmation
-    global hostName
-
     try:
+
+        hostName = ""
+        confirmation = True # Default to True for non-interactive use-cases
+
+        if os.path.exists('config.json'):
+            f = open('config.json', 'r')
+            config = json.loads(f.read())
+            hostName = config["hostName"]
+            confirmation = config["confirmation"]
+            f.close()
+
         # Get the hosts that are using the selected policy
         hosts_using_policy = []
         computer_instance = deepsecurity.ComputersApi(deepsecurity.ApiClient(configuration))
