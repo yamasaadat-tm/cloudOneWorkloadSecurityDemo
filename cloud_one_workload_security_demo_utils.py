@@ -6,6 +6,16 @@ from subprocess import Popen, PIPE, STDOUT
 
 # This file contains various functions that are re-used by the scripts
 
+policyName = ""
+hostName = ""
+confirmation = True # Default to True for non-interactive use-cases
+
+if os.path.exists('config.json'):
+    f = open('config.json', 'r')
+    config = json.loads(f.read())
+    policyName = config[0]["policyName"])
+    hostName = config[0]["hostName"])
+
 # This function will get the operating system where the tests are being run
 # It returns the operating system
 def getoperatingsystem():
@@ -50,20 +60,24 @@ def getpolicyid(configuration, api_version, overrides):
     for policy in available_policies:
         print(str(count) + " = " + policy)
         count+=1
-    policy_selected = False
-    while(policy_selected == False):
-        print("Enter the number for the policy you will be using for these tests?")
-        selected_policy = input()
-        if ((not selected_policy.isdigit()) or (int(selected_policy) > (len(available_policies)))):
-            print("Invalid option, please try again")
-        elif (int(selected_policy) == 0):
-            print("Invalid option, please try again")
-        else:
-            selected_policy = int(selected_policy) - 1
-            print("You have selected to use: " + available_policies[selected_policy])
-            policy_to_update = available_policies[selected_policy]
-            policy_selected =True
-    
+    if policyName != "" and policyName in available_policies:
+        policy_to_update = policyName
+        policy_selected = True
+    else:
+        policy_selected = False
+        while(policy_selected == False):
+            print("Enter the number for the policy you will be using for these tests?")
+            selected_policy = input()
+            if ((not selected_policy.isdigit()) or (int(selected_policy) > (len(available_policies)))):
+                print("Invalid option, please try again")
+            elif (int(selected_policy) == 0):
+                print("Invalid option, please try again")
+            else:
+                selected_policy = int(selected_policy) - 1
+                print("You have selected to use: " + available_policies[selected_policy])
+                policy_to_update = available_policies[selected_policy]
+                policy_selected =True
+        
     # Get the policy id
     policy_instance = deepsecurity.PoliciesApi(deepsecurity.ApiClient(configuration))
     try:
@@ -237,38 +251,45 @@ def gethostid(policy_id, configuration, api_version, overrides):
         if (len(hosts_using_policy) == 1):
             y_or_n_selected = False
             
-            while(y_or_n_selected ==False):
-                print("The host under test is: " + hosts_using_policy[0])
-                print("Is this correct (y/n)?")
-                host_correct = input()
-                if(host_correct.isalpha() and len(host_correct) == 1):
-                    if("y" in host_correct.lower()):
-                        print("Using host: " + hosts_using_policy[0])
-                        y_or_n_selected = True
+            if confirmation:
+                print("Using host: " + hosts_using_policy[0])
+                y_or_n_selected = True
+            else:
+                if while(y_or_n_selected ==False):
+                    print("The host under test is: " + hosts_using_policy[0])
+                    print("Is this correct (y/n)?")
+                    host_correct = input()
+                    if(host_correct.isalpha() and len(host_correct) == 1):
+                        if("y" in host_correct.lower()):
+                            print("Using host: " + hosts_using_policy[0])
+                            y_or_n_selected = True
+                        else:
+                            print("Please assign the policy you selected to the host under test or select the policy assigned to the host under test and try again")
+                            exit() 
                     else:
-                        print("Please assign the policy you selected to the host under test or select the policy assigned to the host under test and try again")
-                        exit() 
-                else:
-                    print("Invalid entry, please try again")
+                        print("Invalid entry, please try again")
         
         # If there is more than one host using the policy
         # Prompt the user to provide the system under test
-        if (len(hosts_using_policy) > 1):
-            count = 1
-            for host in hosts_using_policy:
-                print(str(count) + " = " + host)
-                count+=1
-            print("Enter the number for the host you will be running these tests on?")
-            selected_host = input()
-            if (not selected_host.isdigit()) or (int(selected_host) > (len(hosts_using_policy) + 1) or selected_host == 0):
+        if hostName != "" and hostName in hosts_using_policy:
+            host_to_select = hostName
+        else:
+            if (len(hosts_using_policy) > 1):
+                count = 1
+                for host in hosts_using_policy:
+                    print(str(count) + " = " + host)
+                    count+=1
+                print("Enter the number for the host you will be running these tests on?")
+                selected_host = input()
+                if (not selected_host.isdigit()) or (int(selected_host) > (len(hosts_using_policy) + 1) or selected_host == 0):
                     print("Invalid option, please try again")
                     selected_host = 0
-            selected_host = int(selected_host) - 1
-            print("You have selected to use: " + hosts_using_policy[selected_host]  + " as the host under test")
-            host_to_select = hosts_using_policy[selected_host]
-        else:
-            print("This policy is assigned to: " + hosts_using_policy[0] + " so this host is selected as the host under test")
-            host_to_select = hosts_using_policy[0]
+                selected_host = int(selected_host) - 1
+                print("You have selected to use: " + hosts_using_policy[selected_host]  + " as the host under test")
+                host_to_select = hosts_using_policy[selected_host]
+            else:
+                print("This policy is assigned to: " + hosts_using_policy[0] + " so this host is selected as the host under test")
+                host_to_select = hosts_using_policy[0]
             
         # Get the host id
         for computer in computers.computers:

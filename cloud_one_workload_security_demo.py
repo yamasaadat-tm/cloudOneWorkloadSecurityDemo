@@ -11,6 +11,10 @@ from deepsecurity.rest import ApiException
 import sys, warnings
 import time
 
+import os.path
+from os import path
+import json
+
 # This script will run tests against Deep Security or Cloud One agents to create events in the console and populate the dashboard
 # Setup:
 #    These tests use curl and netcat so ensure that you have them installed on the system under tests
@@ -34,7 +38,17 @@ import time
 #        7) Docker Anti-Malware (Supported on Linux only)
 #        8) All Tests
 
+interactive = True
+tests = []
+
 def main ():
+    # Look for a configuration file
+    if os.path.exists('config.json'):
+        f = open('config.json', 'r')
+        config = json.loads(f.read())
+        interactive = config[0]["interactive"]
+        tests = config[0]["tests"]
+
     # Setup and connect to Cloud One Workload Security or Deep Security
     api_version = 'v1'
     overrides = False
@@ -71,59 +85,60 @@ def main ():
         
     # Check with the user what test the user wants to run
     user_input = 0
-    while(user_input == 0):
-        print("The available tests are: ")
-        print("1 = Anti-Malware")
-        print("2 = Intrusion Prevention")
-        print("3 = Integrity Monitoring")
-        print("4 = Web Reputation")
-        print("5 = Log Inspection")
-        print("6 = Application Control (Note: This test takes about 3 minutes to run)")
-        print("7 = Docker Anti-Malware (only works on Ubuntu and Redhat)")
-        print("8 = All Tests")
-        print("Which test would you like to perform: ")
-        user_input = input()
-        if (not user_input.isdigit()) or (int(user_input) > 8):
-            print("Invalid option, please try again")
-            user_input = 0
-    
+    if len(tests) == 0:
+        while(user_input == 0):
+            print("The available tests are: ")
+            print("1 = Anti-Malware")
+            print("2 = Intrusion Prevention")
+            print("3 = Integrity Monitoring")
+            print("4 = Web Reputation")
+            print("5 = Log Inspection")
+            print("6 = Application Control (Note: This test takes about 3 minutes to run)")
+            print("7 = Docker Anti-Malware (only works on Ubuntu and Redhat)")
+            print("8 = All Tests")
+            print("Which test would you like to perform: ")
+            user_input = input()
+            if (not user_input.isdigit()) or (int(user_input) > 8):
+                print("Invalid option, please try again")
+                user_input = 0
+        
     # Run the anti-malware test
-    if(int(user_input) == 1):
+    if(int(user_input) == 1) or "Anti-Malware" in tests:
         antimalwaretest(operating_system)
         exit()
     
     # Run the intrusion prevention test
-    if(int(user_input) == 2):
+    if(int(user_input) == 2) or "Intrusion Prevention" in tests:
         ipstest(ips_rule_to_apply, policy_id, configuration, api_version, overrides, operating_system)
         exit()
     
     # Run the Integrity Monitoring test
-    if(int(user_input) == 3):
+    if(int(user_input) == 3) or "Integrity Monitoring" in tests:
         integritymonitoringtest(host_id, im_rule_to_apply, policy_id, configuration, api_version, overrides, operating_system)
         exit()
     
     # Run the Web Reputation test
-    if(int(user_input) == 4):
+    if(int(user_input) == 4) or "Web Reputation" in tests:
         webreputationtest(policy_id, configuration, api_version, overrides, operating_system)
         exit()
     
     # Run the Log Inspection test
-    if(int(user_input) == 5):
+    if(int(user_input) == 5) or "Log Inspection" in tests:
         loginspectiontest(li_rule_to_apply,policy_id, configuration, api_version, overrides, operating_system)
         exit()
         
     # Run the Application Control test
-    if(int(user_input) == 6):
+    if(int(user_input) == 6) or "Application Control" in tests:
         applicationcontroltest(host_id, policy_id, configuration, api_version, overrides, operating_system)
         exit()
     
     # Run the Docker antimalware test
-    if(int(user_input) == 7):
+    if(int(user_input) == 7) or "Docker Anti-Malware" in tests:
         dockeramtest(host_id, policy_id, configuration, api_version, overrides, operating_system)
         exit()
         
     # Run all tests
-    if(int(user_input) == 8):
+    if(int(user_input) == 8) or "All Tests" in tests:
         print("Running all tests")
         antimalwaretest(operating_system)
         ipstest(ips_rule_to_apply,policy_id, configuration, api_version, overrides, operating_system)
