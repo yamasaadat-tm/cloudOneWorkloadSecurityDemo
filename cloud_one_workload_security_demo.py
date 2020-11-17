@@ -46,8 +46,7 @@ def main ():
     if os.path.exists('config.json'):
         f = open('config.json', 'r')
         config = json.loads(f.read())
-        interactive = config[0]["interactive"]
-        tests = config[0]["tests"]
+        tests = config["tests"]
 
     # Setup and connect to Cloud One Workload Security or Deep Security
     api_version = 'v1'
@@ -56,7 +55,7 @@ def main ():
         warnings.simplefilter("ignore")
     configuration = deepsecurity.Configuration()
     configuration.host = 'https://cloudone.trendmicro.com:443/api'
-    configuration.api_key['api-secret-key'] = '<Your API Key>'
+    configuration.api_key['api-secret-key'] = '0C0F6851-AB41-04C6-D6A8-5479A257E932:D39434A2-A97D-D987-4A25-5E8C3AEDD018:ooFt+QFJHJqHbF164EPMJMgt7B27ztGPWwhFJt5sGqc='
     
     print("Welcome to the test suite for Cloud One Workload Security")
     print("This script works by running a set of tests and assigns rules at the policy level if necessary")

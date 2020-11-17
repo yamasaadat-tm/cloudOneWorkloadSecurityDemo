@@ -4,6 +4,10 @@ import time
 import platform
 from subprocess import Popen, PIPE, STDOUT
 
+import os.path
+from os import path
+import json
+
 # This file contains various functions that are re-used by the scripts
 
 policyName = ""
@@ -13,8 +17,8 @@ confirmation = True # Default to True for non-interactive use-cases
 if os.path.exists('config.json'):
     f = open('config.json', 'r')
     config = json.loads(f.read())
-    policyName = config[0]["policyName"])
-    hostName = config[0]["hostName"])
+    policyName = config["policyName"]
+    hostName = config["hostName"]
 
 # This function will get the operating system where the tests are being run
 # It returns the operating system
@@ -255,7 +259,7 @@ def gethostid(policy_id, configuration, api_version, overrides):
                 print("Using host: " + hosts_using_policy[0])
                 y_or_n_selected = True
             else:
-                if while(y_or_n_selected ==False):
+                while(y_or_n_selected ==False):
                     print("The host under test is: " + hosts_using_policy[0])
                     print("Is this correct (y/n)?")
                     host_correct = input()
