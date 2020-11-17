@@ -38,15 +38,16 @@ import json
 #        7) Docker Anti-Malware (Supported on Linux only)
 #        8) All Tests
 
-interactive = True
-tests = []
-
 def main ():
+
+    tests = []
+
     # Look for a configuration file
     if os.path.exists('config.json'):
         f = open('config.json', 'r')
         config = json.loads(f.read())
         tests = config["tests"]
+        f.close()
 
     # Setup and connect to Cloud One Workload Security or Deep Security
     api_version = 'v1'

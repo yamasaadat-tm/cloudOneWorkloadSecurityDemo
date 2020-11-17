@@ -19,6 +19,8 @@ if os.path.exists('config.json'):
     config = json.loads(f.read())
     policyName = config["policyName"]
     hostName = config["hostName"]
+    confirmation = config["confirmation"]
+    f.close()
 
 # This function will get the operating system where the tests are being run
 # It returns the operating system
@@ -58,6 +60,9 @@ def getoperatingsystem():
 # After the user seclects the policy, it gets the policy ID for that policy
 # It returns the policy ID
 def getpolicyid(configuration, api_version, overrides):
+
+    global policyName
+
     # List the policies available and print them out so the user can choose
     available_policies = listpolicies(configuration, api_version, overrides)
     count = 1
@@ -235,6 +240,10 @@ def listpolicies(configuration, api_version, overrides):
 # Once the computer has been selected it does a look up for the host ID
 # It then returns the host ID
 def gethostid(policy_id, configuration, api_version, overrides):
+
+    global confirmation
+    global hostName
+
     try:
         # Get the hosts that are using the selected policy
         hosts_using_policy = []
