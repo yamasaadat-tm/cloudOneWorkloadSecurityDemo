@@ -86,7 +86,7 @@ def runtest(operating_system):
         time.sleep(2)
         cmd = "sudo deluser hacker1"
         output = runcommand(cmd)
-    if("redhat" in operating_system):
+    if("redhat" in operating_system or "amazon-linux" in operating_system):
         #Run the test
         cmd = "sudo adduser -m hacker1"
         output = runcommand(cmd)

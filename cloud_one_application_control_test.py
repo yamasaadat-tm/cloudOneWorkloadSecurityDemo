@@ -78,7 +78,7 @@ def runtest(operating_system):
         # Attempt to install docker
         cmd = "sudo apt install docker &" 
         output = runcommand(cmd)
-    if("redhat" in operating_system):
+    if("redhat" in operating_system or "amazon-linux" in operating_system):
         # Attempt to install docker
         cmd = "sudo yum install docker -y &" 
         output = runcommand(cmd)
@@ -99,7 +99,7 @@ def cleanup(policy_id, policies_api, application_control_policy_extension, api_v
         # Not sure why I have to do this twice
         cmd = "sudo apt-get --purge remove docker -y &"
         output = runcommand(cmd)
-    if("redhat" in operating_system):   
+    if("redhat" in operating_system or "amazon-linux" in operating_system):   
         # Remove docker
         cmd = "sudo yum remove docker -y &"
         output = runcommand(cmd)

@@ -12,7 +12,7 @@ def dockeramtest(host_id, policy_id, configuration, api_version, overrides, oper
     # Check if Docker is installed
     print("---Running The Docker Test---")
     docker_installed = False
-    if("ubuntu" in operating_system or "redhat" in operating_system):
+    if("ubuntu" in operating_system or "redhat" in operating_system or "amazon-linux" in operating_system):
         print("Checking if Docker is installed")
         cmd = "sudo docker version" 
         output = runcommand(cmd)
@@ -21,7 +21,7 @@ def dockeramtest(host_id, policy_id, configuration, api_version, overrides, oper
             if("ubuntu" in operating_system):
                 cmd = "sudo apt-get install docker.io -y" 
                 output = runcommand(cmd)
-            if("redhat" in operating_system):
+            if("redhat" in operating_system or "amazon-linux" in operating_system):
                 cmd = "sudo yum install docker -y" 
                 output = runcommand(cmd)
         else:
@@ -57,7 +57,7 @@ def dockeramtest(host_id, policy_id, configuration, api_version, overrides, oper
 # Note this test only works on Ubuntu and Redhat
 def runtest(host_id, policy_id, configuration, api_version, overrides, operating_system):
     #Attempt to download and instantiate a container with malware
-    if("ubuntu" in operating_system or "redhat" in operating_system):
+    if("ubuntu" in operating_system or "redhat" in operating_system or "amazon-linux" in operating_system):
         cmd = "sudo docker pull philippbehmer/docker-eicar:latest" 
         output = runcommand(cmd) 
         cmd = "sudo docker run philippbehmer/docker-eicar:latest" 
@@ -73,7 +73,7 @@ def cleanup(operating_system):
     if("ubuntu" in operating_system):
         cmd = "sudo apt-get --purge remove docker.io -y" 
         output = runcommand(cmd) 
-    if("redhat" in operating_system):
+    if("redhat" in operating_system or "amazon-linux" in operating_system):
         cmd = "sudo yum remove docker -y" 
         output = runcommand(cmd)
     if("windows" in operating_system):

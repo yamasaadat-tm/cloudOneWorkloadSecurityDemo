@@ -83,7 +83,7 @@ def assignimrule(rule_to_apply, rule_id, policy_id, configuration, api_version, 
 #    After the scan for integrity the hosts file will be returned to it's original state
 def runtest(host_id, policy_id, configuration, api_version, overrides, operating_system):
     # Run the test for Linux
-    if("ubuntu" in operating_system or "redhat" in operating_system):
+    if("ubuntu" in operating_system or "redhat" in operating_system or "amazon-linux" in operating_system):
         cmd = "netcat -l 54321 &"
         print("Running command: " + cmd)
         process_info = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE, universal_newlines=True, close_fds=True)
@@ -110,7 +110,7 @@ def runtest(host_id, policy_id, configuration, api_version, overrides, operating
 def runscanforintegrity(host_id, policy_id, configuration, api_version, overrides, operating_system):
     print("Running a scan for integrity (Note: this will time out after 3 minutes and continue on if the scan is not complete)")
     # Run the integrity scan from Linux
-    if("ubuntu" in operating_system or "redhat" in operating_system):
+    if("ubuntu" in operating_system or "redhat" in operating_system or "amazon-linux" in operating_system):
         cmd = "sudo /opt/ds_agent/dsa_control -m \"IntegrityScan:true\""
         output = runcommand(cmd)
         checkstatus(host_id, policy_id, configuration, api_version, overrides)
