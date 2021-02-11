@@ -89,3 +89,11 @@ Before running these scripts, ensure you have the following:
 9) Configure your `config.json` file if you need to run in quiet mode.
 
 Now you can run the script using `python3 cloud_one_workload_security_demo.py`
+
+
+### Related Projects
+
+| GitHub Repository Name  | Description |
+| ------------- | ------------- |
+| [WorkloadSecurityConnector-AWS](https://github.com/GeorgeDavis-TM/WorkloadSecurityConnector-AWS) | Automation scripts to setup the AWS Connector on Trend Micro Cloud One Workload Security / Deep Security (On-Prem on AWS) |
+| [WorkloadSecurity-AWS-SNS](https://github.com/GeorgeDavis-TM/WorkloadSecurity-AWS-SNS) | Setup Event forwarding with AWS SNS to build custom rules and workflow based on detection events |
