@@ -28,31 +28,23 @@ Before running these scripts, ensure you have the following:
 
     `export WorkloadSecurityApiKey=<Your API Key>`
 
-    `curl -L -X POST 'https://app.deepsecurity.trendmicro.com/api/agentdeploymentscripts' \`
+    `curl -L -X POST 'https://app.deepsecurity.trendmicro.com/api/agentdeploymentscripts' `
+    `-H 'Content-Type: application/json' `
+    `-H 'api-version: v1' `
+    `-H 'api-secret-key: '"${WorkloadSecurityApiKey}"'' `
+    `--data-raw '{ `
+    `"platform": "linux", `
+    `"validateCertificateRequired": false, `
+    `"validateDigitalSignatureRequired": false, `
+    `"activationRequired": true, `
+    `"policyID": 432 `
+    `}' | jq --raw-output .scriptBody > ~/dsa_deploy.sh`
 
-    `-H 'Content-Type: application/json' \`
+    `chmod +x ~/dsa_deploy.sh`
 
-    `-H 'api-version: v1' \`
+    `sudo bash ~/dsa_deploy.sh`
 
-    `-H 'api-secret-key: ${WorkloadSecurityApiKey}' \`
-
-    `--data-raw '{ \`
-
-    `"platform": "linux", \`
-
-    `"validateCertificateRequired": false, \`
-
-    `"validateDigitalSignatureRequired": false, \`
-
-    `"activationRequired": true, \`
-
-    `"policyID": 432 \`
-
-    `}'`
-
-    `chmod +x dsa_deploy.sh`
-
-    `./dsa_deploy.sh`
+    `rm ~/dsa_deploy.sh # Optional Step`
 
 5)	The files from this repository
     * Download these files and put them in a directory on the system under test
@@ -62,19 +54,21 @@ Before running these scripts, ensure you have the following:
 6)	The Python SDK for Deep Security/Cloud One Workload Security
     * Download the SDK from: https://automation.deepsecurity.trendmicro.com/sdk/20_0/v1/dsm-py-sdk.zip and put it in the same folder as the files you just downloaded
 
-        `wget https://automation.deepsecurity.trendmicro.com/sdk/20_0/v1/dsm-py-sdk.zip`
+        `wget -P ~ https://automation.deepsecurity.trendmicro.com/sdk/20_0/v1/dsm-py-sdk.zip`
 
     * Unzip the file
 
-        `unzip dsm-py-sdk.zip`
+        `unzip ~/dsm-py-sdk.zip`
 
-    * Install the sdk using: 
+    * Install the sdk dependencies from within the directory: 
     
-        `python3 -m pip install .`
+        `cd ~/deepsecurity`
+        
+        `sudo python3 -m pip install .`
 
                 or
 
-        `pip3 install .`
+        `sudo pip3 install .`
     
 7)	Add the API Key to the cloud_one_workload_security_demo.py
 
@@ -86,7 +80,7 @@ Before running these scripts, ensure you have the following:
 
         `cd cloudOneWorkloadSecurityDemo`
         
-        `sed -i 's/<Your API Key>/${WorkloadSecurityApiKey}/g' cloud_one_workload_security_demo.py`
+        `sed -i 's/<Your API Key>/'${WorkloadSecurityApiKey}'/g' cloud_one_workload_security_demo.py`
 
 8) Install python script dependencies using the requirements.txt file.
 
