@@ -4,5 +4,7 @@
     ],
     "policyName": "Linux Server_2",
     "hostName": "My-SFU-Instance(ec2-3-129-166-181.us-east-2.compute.amazonaws.com)",
-    "confirmation": true
+    "confirmation": true,
+    "dsmHost": "https://cloudone.trendmicro.com:443",
+    "api-secret-key": "<Your-API-Key>"
 }

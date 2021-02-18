@@ -41,13 +41,18 @@ import json
 def main ():
 
     tests = []
+    dsmHost = ""
+    apiSecretKey = ""
 
     # Look for a configuration file
     if os.path.exists('/home/ec2-user/cloudOneWorkloadSecurityDemo/config.json'):
         f = open('/home/ec2-user/cloudOneWorkloadSecurityDemo/config.json', 'r')
         config = json.loads(f.read())
-        tests = config["tests"]
         f.close()
+
+        tests = config["tests"]
+        dsmHost = config["dsmHost"] if "dsmHost" in config.keys() else "https://cloudone.trendmicro.com:443"
+        apiSecretKey = config["api-secret-key"] if "api-secret-key" in config.keys() else None
 
     # Setup and connect to Cloud One Workload Security or Deep Security
     api_version = 'v1'
@@ -55,8 +60,8 @@ def main ():
     if not sys.warnoptions:
         warnings.simplefilter("ignore")
     configuration = deepsecurity.Configuration()
-    configuration.host = 'https://cloudone.trendmicro.com:443/api'
-    configuration.api_key['api-secret-key'] = '<Your API Key>'
+    configuration.host = dsmHost + '/api'
+    configuration.api_key['api-secret-key'] = apiSecretKey
     
     print("Welcome to the test suite for Cloud One Workload Security")
     print("This script works by running a set of tests and assigns rules at the policy level if necessary")
