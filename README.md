@@ -61,8 +61,6 @@ Before running these scripts, ensure you have the following:
         `unzip ~/dsm-py-sdk.zip`
 
     * Install the sdk dependencies from within the directory: 
-    
-        `cd ~/deepsecurity`
         
         `sudo python3 -m pip install .`
 
@@ -70,23 +68,37 @@ Before running these scripts, ensure you have the following:
 
         `sudo pip3 install .`
     
-7)	Add the API Key to the cloud_one_workload_security_demo.py
+7)	Add the API Key to the `config.json` file
 
-    * Find the line `configuration.api_key['api-secret-key'] = '<Your API Key>'`
+    * Find the line `"api-secret-key" = "<Your API Key>"`
 
-    * Modify the line and change the <Your API Key> to your actual API key. If you don't have an API Key, refer to the Help Docs here - https://cloudone.trendmicro.com/docs/workload-security/api-cookbook-set-up/#create-an-api-key
+    * Change `<Your-API-Key>` to your actual API key. If you don't have an API Key, refer to the Help Docs here - https://cloudone.trendmicro.com/docs/workload-security/api-cookbook-set-up/#create-an-api-key
 
     * Once you've added your API Key, save the file.
 
+                    or
+
         `cd cloudOneWorkloadSecurityDemo`
         
-        `sed -i 's/<Your API Key>/'${WorkloadSecurityApiKey}'/g' cloud_one_workload_security_demo.py`
+        `sed -i 's/<Your API Key>/'${WorkloadSecurityApiKey}'/g' config.json`
 
 8) Install python script dependencies using the requirements.txt file.
 
     `pip3 install -r requirements.txt`
 
 9) Configure your `config.json` file if you need to run in quiet mode.
+
+### Config.json parameters -
+
+| Fields | Type | Description | Required? |
+|--------| ---- | ----------- | --------- |
+|`tests` | List | Contains all the different tests you can run from this utility | Yes |
+| `policyName` | String | The policy that is targeted for a demo attack | Yes |
+| `hostName` | String | The exact hostname of the instance targeted | Yes |
+| `confirmation` | Boolean | Override input confirmation to run the tests | Yes (for Quiet mode) |
+| `dsmHost` | String | Cloud One Workload Security / Deep Security Manager URL (Default: `https://cloudone.trendmicro.com:443`) | Optional. Used only for non-SaaS DSM tests |
+| `api-secret-key` | String | Cloud One WOrkload Security / Deep Security API Key. You can create an API Key using these instructions - https://cloudone.trendmicro.com/docs/workload-security/api-cookbook-set-up/#create-an-api-key | Yes |
+
 
 Now you can run the script using `python3 cloud_one_workload_security_demo.py`
 
