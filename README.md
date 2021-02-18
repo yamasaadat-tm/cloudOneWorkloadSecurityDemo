@@ -92,15 +92,15 @@ Before running these scripts, ensure you have the following:
 
 | Fields | Type | Description | Required? |
 |--------| ---- | ----------- | --------- |
-|`tests` | List | Contains all the different tests you can run from this utility | Yes |
+|`tests` | List | Contains all the different tests you can run from this utility. Valid list items are `["Anti-Malware", "Intrusion Prevention", "Integrity Monitoring", "Web Reputation", "Log Inspection", "Application Control", "Docker Anti-Malware"]` or simply `["All Tests"]` | Yes |
 | `policyName` | String | The policy that is targeted for a demo attack | Yes |
 | `hostName` | String | The exact hostname of the instance targeted | Yes |
 | `confirmation` | Boolean | Override input confirmation to run the tests | Yes (for Quiet mode) |
 | `dsmHost` | String | Cloud One Workload Security / Deep Security Manager URL (Default: `https://cloudone.trendmicro.com:443`) | Optional. Used only for non-SaaS DSM tests |
-| `api-secret-key` | String | Cloud One WOrkload Security / Deep Security API Key. You can create an API Key using these instructions - https://cloudone.trendmicro.com/docs/workload-security/api-cookbook-set-up/#create-an-api-key | Yes |
+| `api-secret-key` | String | Cloud One Workload Security / Deep Security API Key. You can create an API Key using these instructions - https://cloudone.trendmicro.com/docs/workload-security/api-cookbook-set-up/#create-an-api-key | Yes |
 
 
-Now you can run the script using `python3 cloud_one_workload_security_demo.py`
+10) Now you can run the script using `python3 cloud_one_workload_security_demo.py`
 
 
 ### Related Projects
