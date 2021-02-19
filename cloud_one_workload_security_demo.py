@@ -41,7 +41,7 @@ import json
 def main ():
 
     tests = []
-    dsmHost = ""
+    dsmHost = "https://cloudone.trendmicro.com:443"
     apiSecretKey = ""
 
     # Look for a configuration file
@@ -51,8 +51,9 @@ def main ():
         f.close()
 
         tests = config["tests"]
-        dsmHost = config["dsmHost"] if "dsmHost" in config.keys() else "https://cloudone.trendmicro.com:443"
-        apiSecretKey = config["api-secret-key"] if "api-secret-key" in config.keys() else None
+        if "dsmHost" in config.keys():
+            dsmHost = config["dsmHost"]
+        apiSecretKey = config["api-secret-key"] if "api-secret-key" in config.keys() else ""
 
     # Setup and connect to Cloud One Workload Security or Deep Security
     api_version = 'v1'
