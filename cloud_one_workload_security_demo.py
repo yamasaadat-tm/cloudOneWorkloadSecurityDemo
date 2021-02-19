@@ -45,8 +45,8 @@ def main ():
     apiSecretKey = ""
 
     # Look for a configuration file
-    if os.path.exists('/home/ec2-user/cloudOneWorkloadSecurityDemo/config.json'):
-        f = open('/home/ec2-user/cloudOneWorkloadSecurityDemo/config.json', 'r')
+    if os.path.exists('./config.json'):
+        f = open('./config.json', 'r')
         config = json.loads(f.read())
         f.close()
 
